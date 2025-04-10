@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="card-header">
+    <button
+      mat-icon-button
+      color="warn"
+      (click)="eliminar.emit()"
+      aria-label="Eliminar"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <h3>{{ nombre }}</h3>
+    <p>📞 {{ telefono }}</p>
+  </div>
+</div>

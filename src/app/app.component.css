@@ -1,0 +1,10 @@
+app-contacto {
+  padding-bottom: 16px;
+  display: block;
+}
+
+.snackbar-exito {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+}
