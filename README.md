@@ -1,6 +1,6 @@
-# MiPrimeraApp
+# 📒 Agenda Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.7.
+Una aplicación de agenda de contactos creada con **Angular 19**, usando componentes standalone, modales con Angular Material y notificaciones tipo toast.
 
 ## Development server
 
