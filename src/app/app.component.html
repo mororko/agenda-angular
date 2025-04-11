@@ -1,6 +1,8 @@
 <main class="main">
   <h1>Mi Agenda de contactos 📒</h1>
 
+  <router-outlet />
+
   <app-formulario-contacto
     (contactoAgregado)="agregarContacto($event)"
   ></app-formulario-contacto>
@@ -23,5 +25,3 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<router-outlet />

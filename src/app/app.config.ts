@@ -1,5 +1,6 @@
 import {
   ApplicationConfig,
+  Component,
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
