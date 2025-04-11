@@ -46,14 +46,14 @@ export class AppComponent implements OnInit {
     this.snackBar.open('✅ Contacto agregado', 'Cerrar', { duration: 3000 });
   }
 
-  eliminarContacto(index: number, contacto: { nombre: string }) {
+  eliminarContacto(contacto: Contacto): void {
     const dialogRef = this.dialog.open(EliminarContactoModalComponent, {
       data: { nombre: contacto.nombre },
     });
 
     dialogRef.afterClosed().subscribe((confirmado) => {
-      if (confirmado) {
-        this.contactoService.eliminarContacto(index);
+      if (confirmado && contacto.id) {
+        this.contactoService.eliminarContacto(contacto.id);
         this.snackBar.open('🗑️ Contacto eliminado', 'Cerrar', {
           duration: 3000,
         });

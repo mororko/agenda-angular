@@ -1,50 +1,50 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface Contacto {
+  id?: number;
   nombre: string;
   telefono: string;
 }
-
-const STORAGE_KEY = 'agenda-contactos';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactoService {
-  private contactos: Contacto[] = [];
+  private baseUrl = 'http://localhost:3000/contactos';
+  private contactosSubject = new BehaviorSubject<Contacto[]>([]);
 
-  private contactosSubject = new BehaviorSubject<Contacto[]>(this.contactos);
-
-  constructor() {
-    this.cargarDesdeLocalStorage();
+  constructor(private http: HttpClient) {
+    this.cargarContactosDesdeAPI();
   }
-
-  private cargarDesdeLocalStorage(): void {
-    const datosGuardados = localStorage.getItem(STORAGE_KEY);
-    if (datosGuardados) {
-      this.contactos = JSON.parse(datosGuardados);
-      this.contactosSubject.next([...this.contactos]);
-    }
-  }
-
-  private guardarEnLocalStorage(): void {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.contactos));
-  }
-
   getContactos(): Observable<Contacto[]> {
     return this.contactosSubject.asObservable();
   }
 
-  agregarContacto(contacto: Contacto): void {
-    this.contactos.push(contacto);
-    this.guardarEnLocalStorage();
-    this.contactosSubject.next([...this.contactos]);
+  cargarContactosDesdeAPI(): void {
+    this.http.get<Contacto[]>(this.baseUrl).subscribe((data) => {
+      this.contactosSubject.next(data);
+    });
   }
 
-  eliminarContacto(index: number): void {
-    this.contactos.splice(index, 1);
-    this.guardarEnLocalStorage();
-    this.contactosSubject.next([...this.contactos]);
+  agregarContacto(contacto: Contacto): void {
+    this.http
+      .post<Contacto>(this.baseUrl, contacto)
+      .pipe(tap(() => this.cargarContactosDesdeAPI()))
+      .subscribe();
+  }
+
+  eliminarContacto(id: number): void {
+    this.http
+      .delete(`${this.baseUrl}/${id}`)
+      .pipe(
+        tap(() => this.cargarContactosDesdeAPI()),
+        catchError((err) => {
+          console.error('Error al eliminar contacto:', err);
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 }
