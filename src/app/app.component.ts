@@ -10,6 +10,9 @@ import { EliminarContactoModalComponent } from './eliminar-contacto-modal/elimin
 import { ContactoService, Contacto } from './servicios/contacto.service';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { EditarContactoModalComponent } from './editar-contacto-modal/editar-contacto-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +25,10 @@ import { Observable } from 'rxjs';
     MatSnackBarModule,
     MatDialogModule,
     EliminarContactoModalComponent,
+    EditarContactoModalComponent,
     AsyncPipe,
+    MatButtonModule,
+    MatIconModule,
   ],
   standalone: true,
   templateUrl: './app.component.html',
@@ -56,6 +62,22 @@ export class AppComponent implements OnInit {
         this.contactoService.eliminarContacto(contacto.id);
         this.snackBar.open('🗑️ Contacto eliminado', 'Cerrar', {
           duration: 3000,
+        });
+      }
+    });
+  }
+
+  editarContacto(contacto: Contacto): void {
+    const dialogRef = this.dialog.open(EditarContactoModalComponent, {
+      data: { ...contacto },
+    });
+
+    dialogRef.afterClosed().subscribe((actualizado) => {
+      if (actualizado && actualizado.id) {
+        this.contactoService.editarContacto(actualizado).subscribe(() => {
+          this.snackBar.open('✏️ Contacto actualizado', 'Cerrar', {
+            duration: 3000,
+          });
         });
       }
     });

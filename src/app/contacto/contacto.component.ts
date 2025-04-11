@@ -14,4 +14,5 @@ export class ContactoComponent {
   @Input() nombre = '';
   @Input() telefono = '';
   @Output() eliminar = new EventEmitter<void>();
+  @Output() editar = new EventEmitter<void>();
 }

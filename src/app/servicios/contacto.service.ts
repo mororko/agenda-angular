@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, tap, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { EditarContactoModalComponent } from '../editar-contacto-modal/editar-contacto-modal.component';
 
 export interface Contacto {
   id?: number;
@@ -46,5 +47,11 @@ export class ContactoService {
         })
       )
       .subscribe();
+  }
+
+  editarContacto(contacto: Contacto): Observable<Contacto> {
+    return this.http
+      .put<Contacto>(`${this.baseUrl}/${contacto.id}`, contacto)
+      .pipe(tap(() => this.cargarContactosDesdeAPI()));
   }
 }

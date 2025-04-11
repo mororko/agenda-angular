@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Editar contacto</h2>
+
+<mat-dialog-content>
+  <form>
+    <label>Nombre:</label>
+    <input [(ngModel)]="nombre" name="nombre" />
+
+    <label>Telefono:</label>
+    <input [(ngModel)]="telefono" name="telefono" />
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions alig="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>
