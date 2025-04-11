@@ -1,16 +1,18 @@
 <main class="main">
-  <h1>Mi Agenda de contactos 📞</h1>
+  <h1>Mi Agenda de contactos 📒</h1>
 
   <app-formulario-contacto
     (contactoAgregado)="agregarContacto($event)"
   ></app-formulario-contacto>
 
-  <app-contacto
-    *ngFor="let contacto of contactos; let i = index"
-    [nombre]="contacto.nombre"
-    [telefono]="contacto.telefono"
-    (eliminar)="eliminarContacto(i, contacto)"
-  ></app-contacto>
+  <ng-container *ngIf="contactos$ | async as contactos">
+    <app-contacto
+      *ngFor="let contacto of contactos; let i = index"
+      [nombre]="contacto.nombre"
+      [telefono]="contacto.telefono"
+      (eliminar)="eliminarContacto(i, contacto)"
+    ></app-contacto>
+  </ng-container>
 </main>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,9 @@ import { FormularioContactoComponent } from './formulario-contacto/formulario-co
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { EliminarContactoModalComponent } from './eliminar-contacto-modal/eliminar-contacto-modal.component';
+import { ContactoService, Contacto } from './servicios/contacto.service';
+import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,30 +22,28 @@ import { EliminarContactoModalComponent } from './eliminar-contacto-modal/elimin
     MatSnackBarModule,
     MatDialogModule,
     EliminarContactoModalComponent,
+    AsyncPipe,
   ],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
-  contactos = [
-    { nombre: 'Juan', telefono: '123456789' },
-    { nombre: 'Maria', telefono: '987654321' },
-    { nombre: 'Pedro', telefono: '456789123' },
-    { nombre: 'Ana', telefono: '321654987' },
-  ];
+export class AppComponent implements OnInit {
+  contactos$!: Observable<Contacto[]>;
 
-  constructor(private snackBar: MatSnackBar, private dialog: MatDialog) {}
+  constructor(
+    private contactoService: ContactoService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
+
+  ngOnInit(): void {
+    this.contactos$ = this.contactoService.getContactos();
+  }
 
   agregarContacto(contacto: { nombre: string; telefono: string }) {
-    this.contactos.push(contacto);
-
-    this.snackBar.open('✅ Contacto agregado con éxito', 'Cerrar', {
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      panelClass: ['snackbar-exito'],
-    });
+    this.contactoService.agregarContacto(contacto);
+    this.snackBar.open('✅ Contacto agregado', 'Cerrar', { duration: 3000 });
   }
 
   eliminarContacto(index: number, contacto: { nombre: string }) {
@@ -52,8 +53,10 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe((confirmado) => {
       if (confirmado) {
-        this.contactos.splice(index, 1);
-        this.snackBar.open('Contacto eliminado', 'Cerrar', { duration: 3000 });
+        this.contactoService.eliminarContacto(index);
+        this.snackBar.open('🗑️ Contacto eliminado', 'Cerrar', {
+          duration: 3000,
+        });
       }
     });
   }

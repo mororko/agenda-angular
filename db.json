@@ -1,0 +1,6 @@
+{
+  "contactos": [
+    { "id": 1, "nombre": "Ana García", "telefono": "123-456-789" },
+    { "id": 2, "nombre": "Luis Pérez", "telefono": "987-654-321" }
+  ]
+}
