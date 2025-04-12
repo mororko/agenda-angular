@@ -1,2 +1,30 @@
-<h2>Dashboard</h2>
-<button (click)="logout()">Cerrar sesion</button>
+<div class="header">
+  <button
+    mat-icon-button
+    color="warn"
+    (click)="logout()"
+    aria-label="Cerrar sesion"
+  >
+    <mat-icon>logout</mat-icon>
+  </button>
+</div>
+
+<hr />
+
+<div class="dashboard-contenido">
+  <h1>Mi Agenda de contactos 📒</h1>
+
+  <app-formulario-contacto
+    (contactoAgregado)="agregarContacto($event)"
+  ></app-formulario-contacto>
+
+  <ng-container *ngIf="contactos$ | async as contactos">
+    <app-contacto
+      *ngFor="let contacto of contactos$ | async"
+      [nombre]="contacto.nombre"
+      [telefono]="contacto.telefono"
+      (eliminar)="eliminarContacto(contacto)"
+      (editar)="editarContacto(contacto)"
+    ></app-contacto>
+  </ng-container>
+</div>

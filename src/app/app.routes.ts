@@ -12,4 +12,5 @@ export const routes: Route[] = [
     component: DashboardComponent,
     canActivate: [authGuard],
   },
+  { path: '**', redirectTo: 'login' },
 ];
