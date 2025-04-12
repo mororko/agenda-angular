@@ -1,6 +1,6 @@
 <div class="formulario">
-  <input type="text" placeholder="Nombre" [(ngModel)]="nombre" />
-  <input type="text" placeholder="Telefono" [(ngModel)]="telefono" />
+  <input [(ngModel)]="nombre" name="nombre" placeholder="Nombre" />
+  <input [(ngModel)]="telefono" name="telefono" placeholder="Teléfono" />
 
   <button (click)="agregarContacto()">Agregar</button>
 </div>

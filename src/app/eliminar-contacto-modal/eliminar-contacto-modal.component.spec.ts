@@ -1,23 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EditarContactoModalComponent } from '../editar-contacto-modal/editar-contacto-modal.component';
 
-import { EliminarContactoModalComponent } from './eliminar-contacto-modal.component';
-
-describe('EliminarContactoModalComponent', () => {
-  let component: EliminarContactoModalComponent;
-  let fixture: ComponentFixture<EliminarContactoModalComponent>;
-
+describe('EditarContactoModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EliminarContactoModalComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(EliminarContactoModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [EditarContactoModalComponent], // ¡standalone!
+      providers: [
+        { provide: MatDialogRef, useValue: { close: () => {} } },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { id: 1, nombre: 'Juan', telefono: '123456' },
+        },
+      ],
+    }).compileComponents();
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(EditarContactoModalComponent);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });
